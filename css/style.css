@@ -558,17 +558,19 @@ body.dark #noResults {
     }
 
 
-     .grades {
+    .grades {
+
+        display: flex;
 
         flex-direction: column;
 
-        flex-wrap: nowrap;
+        gap: 15px;
 
     }
 
     .grades input {
 
-        width: 100%;
+        width: 100% !important;
 
         box-sizing: border-box;
 
@@ -576,15 +578,11 @@ body.dark #noResults {
 
     .calculator-card {
 
+        width: 100%;
+
+        box-sizing: border-box;
+
         padding: 24px;
-
-    }
-
-    .calculator-card h1 {
-
-        font-size: 2.4rem;
-
-        line-height: 1.15;
 
     }
 }
