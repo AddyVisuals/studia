@@ -556,4 +556,35 @@ body.dark #noResults {
         font-size: 1rem;
 
     }
+
+
+     .grades {
+
+        flex-direction: column;
+
+        flex-wrap: nowrap;
+
+    }
+
+    .grades input {
+
+        width: 100%;
+
+        box-sizing: border-box;
+
+    }
+
+    .calculator-card {
+
+        padding: 24px;
+
+    }
+
+    .calculator-card h1 {
+
+        font-size: 2.4rem;
+
+        line-height: 1.15;
+
+    }
 }
