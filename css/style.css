@@ -583,10 +583,12 @@ body.dark #noResults {
     position: fixed;
     top: 0;
     z-index: 1000;
+    overflow: hidden;
+    isolation: isolate;
 
-    background: rgba(255,255,255,0.75);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
 
     padding: 20px 0;
 
@@ -621,7 +623,7 @@ body.dark #noResults {
 }
 
 body.dark .top-header {
-    background: rgba(18, 18, 18, 0.75);
+    background: rgba(18, 18, 18, 0.92);
 }
 
 body.dark .top-header::after {
