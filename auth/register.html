@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="sq">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width", initial-scale="1.0">
+        <title>Regjistrohu</title>
+        <link rel="stylesheet" href="../css/style.css">
+    </head>
+
+
+<body>
+    <main class="auth-container">
+        <div class="auth-card">
+            <h1>📝 Regjistrohu</h1>
+            <p>Krijo nje llogari per te kontribuar ose aksesuar materialet studentore.</p>
+            
+
+<form id="registerForm">
+    <input id="registerName" type="text" placeholder="Emri i plotë" required>
+    <input id="registerEmail" type="email" placeholder="Email-i juaj" required>
+   <div class="password-field">
+
+    <input
+        id="registerPassword"
+        type="password"
+        placeholder="Fjalëkalimi"
+        required
+    >
+
+    <button
+        type="button"
+        class="password-toggle"
+        data-target="registerPassword"
+    >
+        <i data-lucide="eye"></i>
+    </button>
+
+</div>
+    <div class="password-field">
+
+    <input
+        id="registerConfirm"
+        type="password"
+        placeholder="Konfirmo fjalëkalimin"
+        required
+    >
+
+    <button
+        type="button"
+        class="password-toggle"
+        data-target="registerConfirm"
+    >
+        <i data-lucide="eye"></i>
+    </button>
+
+</div>
+
+   <button type="submit" id="registerBtn">Regjistrohu</button>
+</form>
+
+
+
+<p class="alr_p" id="authMessage">
+    Ke tashme nje llogari?
+    <a class="arrow-link" href="../auth/login.html">Hyr</a>
+</p>
+
+
+        </div>
+    </main>
+
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/main.js"></script>
+</body>
+
+
+
+
+
+
+</html>

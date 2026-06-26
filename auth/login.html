@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width", initial-scale="1.0">
+        <title>Hyr në llogari</title>
+        <link rel="stylesheet" href="../css/style.css">
+
+    </head>
+
+
+<body>
+    <main class="auth-container">
+        <div class="auth-card">
+            <h1>👤 Hyr në llogari</h1>
+            <p>Hyr per te aksesuar material dhe mjetet e arkivës.</p>
+
+           <form id="loginForm">
+    <input id="loginEmail" type="email" placeholder="Email-i juaj" required>
+   <div class="password-field">
+
+    <input
+        id="loginPassword"
+        type="password"
+        placeholder="Fjalëkalimi"
+        required
+    >
+
+    <button
+        type="button"
+        class="password-toggle"
+        data-target="loginPassword"
+    >
+        <i data-lucide="eye"></i>
+    </button>
+
+</div>
+
+    <button type="submit">Hyr</button>
+</form>
+
+
+
+            <p id="authMessage">
+                Nuk ke nje llogari? <a class="arrow-link"href="register.html">Regjistrohu</a>
+            </p>
+
+            <a id="help" class="arrow-link"href="">Ndihma</a>
+        </div>
+    </main>
+
+   
+    <script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/main.js"></script>
+</body>
+
+
+
+
+</html>

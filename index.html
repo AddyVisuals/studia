@@ -13,34 +13,46 @@
 <body>
 
 
+<div id="menuBlur"></div>
+
+<div id="userDropdown" class="user-dropdown">
+    <p id="dropdownUserName">User</p>
+    <button type="button" id="logoutBtn" onclick="logoutUser()">Dil nga llogaria</button>
+    <button type="button" disabled>Settings · Coming soon</button>
+</div>
     <header class="top-header">
 
 <nav class="navbar">
 
     <div class="nav-title">
-
         Arkiva Studentore 📚
+    </div>
+
+    <div class="nav-right">
+
+        <input
+            type="text"
+            id="searchInput"
+            class="search-bar"
+            placeholder="Kërko për një kurs..."
+        >
+
+<div class="user-menu">
+    <a href="auth/login.html" id="userBtn" class="user-btn" title="Login">
+        <span class="user-icon">👤</span>
+    </a>
+
+</div>
+
+<button id="theme-toggle">🌙</button>
 
     </div>
-<div class="nav-right">
- <input
-
-        type="text"
-
-        id="searchInput"
-
-        class="search-bar"
-
-        placeholder="Kërko për një kurs..."
-
-    >
-
-    <button id="theme-toggle">🌙</button>
-</div>
-   
 
 </nav>
+
   </header>
+
+   
 
 
 <div id="overlay">
@@ -123,14 +135,14 @@
     </div>
 
 
-    <h2 class="section-title">Mjete</h2>
+<h2 class="section-title">Mjete</h2>
 
-    <div class="tools-grid">
-        <a href="tools/average.html" class="card">
-    <h3>🧮 Llogarit Mesataren</h3>
-    <p>Llogarit mesataren tende</p>
-</a>
-    </div>
+<div class="tools-grid">
+    <a href="tools/average.html" class="card">
+        <h3>🧮 Llogarit Mesataren</h3>
+        <p>Llogarit mesataren tende</p>
+    </a>
+</div>
 
 
     <h2 class="section-title">Arkiva</h2>
@@ -151,6 +163,10 @@
     <p>Krijuar nga Anonymous, per studentet.</p>
 </footer>
 
+
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/main.js"></script>
 
 

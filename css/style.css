@@ -47,79 +47,80 @@ body.dark {
     color: white;
 }
 
-a {
-    position: relative;
-    text-decoration: none;
-    color: inherit;
 
+.arrow-link {
+    position: relative;
     display: inline-block;
 
-    transition: transform 0.3s ease;
+    color: inherit;
+    text-decoration: none;
+       font-weight: 500;
+        transition: color .25s ease;
 }
 
-a::before {
+.arrow-link:hover {
 
+       color: #2563eb;
+       font-weight: 700;
+
+}
+
+.arrow-link::after {
     content: "→";
 
+    position: absolute;
+    top: 50%;
+    margin-left: 8px;
+
     opacity: 0;
+    transform: translateY(-50%) translateX(-6px);
 
-    margin-right: 0px;
+    transition:
+        opacity .25s ease,
+        transform .25s ease;
 
-    transition: all 0.3s ease;
-
+    pointer-events: none;
 }
 
-a:hover::before {
-
+.arrow-link:hover::after {
     opacity: 1;
-
-    margin-right: 8px;
-
-
-
-}
-hr {
-    border: 1px solid #33333359;
-}
-
-ul {
-    padding-left: 20px;
+    transform: translateY(-50%) translateX(0);
 }
 
 
+.user-btn,
 #theme-toggle {
-    position: static;
-    top: 20px;
-    right: 20px;
+    width: 48px;
+    height: 48px;
 
-    background-color: #1e1e1e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 6px;
+
+    background: #1e1e1e;
     color: white;
 
     border: 1px solid #333;
-    border-radius: 4px;
 
-    padding: 10px 10px;
+    font-size: 1.2rem;
+    text-decoration: none;
 
-    font-size: 14px;
-    cursor: pointer;
-
-    transition: 0.3s;
-    
+    transition: 0.25s ease;
 }
 
+.user-btn:hover,
 #theme-toggle:hover {
-    background-color: #2a2a2a;
     transform: translateY(-2px);
+    background: #2a2a2a;
 }
 
-
-
-
-
+body.dark .user-btn,
 body.dark #theme-toggle {
-    background-color: white;
+    background: white;
     color: black;
-    border: 1px solid #ccc;
+    border-color: #ccc;
 }
 
 #overlay {
@@ -135,7 +136,7 @@ body.dark #theme-toggle {
 
     z-index: 9999;
 
-    backdrop-filter: blur(3px);
+    backdrop-filter: blur(1px);
 }
 
 #popup {
@@ -401,7 +402,7 @@ body.dark .back-link {
 
     align-items: center;
 
-    gap: 20px;
+    gap: 12px;
 
 }
 
@@ -417,6 +418,7 @@ body.dark .back-link {
 .search-bar {
 
   width: 700px;
+  
 
     padding: 12px 18px;
 
@@ -430,7 +432,7 @@ body.dark .back-link {
 
     flex: 1;
 
-    max-width: 900px;
+    max-width: 850px;
 }
 
 .search-bar:focus {
@@ -583,7 +585,7 @@ body.dark #noResults {
     position: fixed;
     top: 0;
     z-index: 1000;
-    overflow: hidden;
+
     isolation: isolate;
 
   background: rgba(255, 255, 255, 0.92);
@@ -634,4 +636,401 @@ body.dark .top-header::after {
         rgba(255,255,255,0.15) 85%,
         transparent
     );
+}
+
+
+
+
+.user-btn {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 4px;
+
+    background: #1e1e1e;
+    color: white;
+    text-decoration: none;
+
+
+    font-size: 1.3rem;
+
+    transition: 0.25 ease;
+}
+
+
+.user-btn:hover {
+    transform: translateY(-2px);
+}
+
+
+
+.auth-container {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.auth-card {
+    width: min(420px, 100%);
+    background: rgba(255, 255, 255, 0.85);
+    padding: 35px;
+    border-radius: 10px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+}
+
+.auth-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    
+}
+
+.auth-card input, .auth-card button {
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 4px;
+        font-size: 15px;
+}
+
+
+body.dark .auth-card {
+    background:#1e1e1e;
+    color: white;
+    border: 1px solid #333;
+}
+
+body.dark .auth-card input {
+    background: #121212;
+    color: white;
+    border-color: #444;
+}
+
+.tools-grid,
+.courses-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+
+#theme-toggle svg {
+    display: block !important;
+    width: 24px !important;
+    height: 24px !important;
+    color: currentColor;
+    stroke: currentColor;
+}
+
+#theme-toggle {
+    color: white;
+}
+
+#theme-toggle i {
+    display: none;
+}
+
+
+body.dark #theme-toggle {
+    color: black;
+}
+
+
+.theme-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.sun-icon {
+    display: none;
+}
+
+body.dark .moon-icon {
+    display: none;
+}
+
+body.dark .sun-icon {
+    display: block;
+}
+
+
+button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+/* ===========================
+   USER MENU
+=========================== */
+
+.user-menu {
+    position: relative;
+}
+
+.user-btn {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 4px;
+
+    background: #1e1e1e;
+    color: white;
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+.user-btn:hover {
+    transform: translateY(-2px);
+}
+
+.user-icon {
+    font-size: 1.2rem;
+}
+
+
+/* ===========================
+   BACKGROUND BLUR
+=========================== */
+
+#menuBlur {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0,0,0,.15);
+
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(5px);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: .25s ease;
+
+    z-index: 4000;
+}
+
+#menuBlur.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* ===========================
+   USER DROPDOWN
+=========================== */
+
+.user-dropdown {
+
+    position: fixed;
+
+    top: 88px;
+    right: 32px;
+
+    width: 260px;
+
+    background: white;
+
+    border-radius: 6px;
+
+    padding: 16px;
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.18);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateY(-10px);
+
+    transition:
+        opacity .25s,
+        transform .25s,
+        visibility .25s;
+
+    z-index: 5000;
+}
+
+.user-dropdown.show {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    transform: translateY(0);
+}
+
+.user-dropdown p {
+
+    margin: 0 0 14px;
+
+
+    font-weight: 700;
+}
+
+.user-dropdown button {
+
+    width: 100%;
+
+    margin-top: 10px;
+
+    border-radius: 6px;
+}
+
+
+/* ===========================
+   DARK MODE
+=========================== */
+
+body.dark .user-dropdown {
+
+    background: #1e1e1e;
+
+    color: white;
+
+    border: 1px solid #333;
+}
+
+@media (max-width: 768px) {
+    .user-dropdown {
+        top: auto;
+        right: 16px;
+        left: 16px;
+        bottom: 24px;
+
+        width: auto;
+        max-width: none;
+
+        padding: 18px;
+        border-radius: 20px;
+    }
+
+    .user-dropdown button {
+        min-height: 48px;
+        font-size: 1rem;
+    }
+
+    #menuBlur {
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+    }
+}
+
+
+@media (max-width: 768px) {
+    .auth-container {
+        min-height: 100vh;
+        padding: 24px;
+        align-items: flex-start;
+        padding-top: 80px;
+        box-sizing: border-box;
+    }
+
+    .auth-card {
+        width: 100%;
+        padding: 28px;
+        border-radius: 20px;
+        box-sizing: border-box;
+    }
+
+    .auth-card h1 {
+        font-size: 2.2rem;
+        line-height: 1.15;
+    }
+
+    .auth-card p {
+        font-size: 1rem;
+    }
+
+    .auth-card input,
+    .auth-card button {
+        width: 100%;
+        min-height: 48px;
+        font-size: 1rem;
+    }
+
+    .auth-card form {
+        gap: 14px;
+    }
+}
+
+
+
+
+.password-field {
+    position: relative;
+    width: 100%;
+}
+
+.password-field input {
+    width: 100%;
+    padding-right: 52px;
+    box-sizing: border-box;
+}
+.password-toggle {
+    width: 40px !important;
+    height: 40px;
+
+    position: absolute;
+    right: 14px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    background: transparent !important;
+    border: none;
+
+    padding: 0;
+    margin: 0;
+
+    cursor: pointer;
+
+    color: #777;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.password-toggle:hover {
+    transform: translateY(-50%);
+    background: transparent !important;
+}
+
+.password-field {
+    position: relative;
+    width: 100%;
+}
+
+.password-field input {
+    width: 100%;
+    padding-right: 60px;
+    box-sizing: border-box;
+}
+
+
+.alr_p {
+    font-style: italic;
+}
+
+
+.alr_p a {
+    font-style: normal;
+}
+
+
+#help {
+    text-decoration: underline;
 }
