@@ -6,7 +6,7 @@
 <title>Arkiva e Studentit</title>
 
 <link rel="stylesheet" href="css/style.css">
-
+<link rel="icon" type="image/png" href="logo/FAV.png">
    </head>
 
 
@@ -24,18 +24,28 @@
 
 <nav class="navbar">
 
-    <div class="nav-title">
-        Arkiva Studentore 📚
-    </div>
+<div class="nav-title">
+    <span>Arkiva Studentore</span>
+    <img src="logo/LOGO.png" alt="Logo" class="navbar-logo">
+</div>
 
     <div class="nav-right">
 
-        <input
-            type="text"
-            id="searchInput"
-            class="search-bar"
-            placeholder="Kërko për një kurs..."
-        >
+       <div class="search-wrapper">
+
+    <i data-lucide="search" class="search-icon"></i>
+
+    <input
+
+        class="search-bar"
+
+        type="text"
+
+        placeholder="Kërko për një kurs..."
+
+    >
+
+</div>
 
 <div class="user-menu">
     <a href="auth/login.html" id="userBtn" class="user-btn" title="Login">
