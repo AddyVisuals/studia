@@ -1,186 +1,197 @@
 <!DOCTYPE html>
-<html>
-   <head>
-<meta charset = "UTF-8">
-<meta name="viewport" content="width=device-width", initial-scale="1.0">
-<title>Arkiva e Studentit</title>
+<html lang="sq">
 
-<link rel="stylesheet" href="css/style.css">
-<link rel="icon" type="image/png" href="logo/FAV.png">
-   </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>Arkiva e Studentit</title>
+
+    <link rel="icon" type="image/png" href="logo/FAV.png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
 
 <body>
 
+    <!-- Background Blur -->
+    <div id="menuBlur"></div>
 
-<div id="menuBlur"></div>
+    <!-- User Dropdown -->
+    <div id="userDropdown" class="user-dropdown">
+        <p id="dropdownUserName">User</p>
 
-<div id="userDropdown" class="user-dropdown">
-    <p id="dropdownUserName">User</p>
-    <button type="button" id="logoutBtn" onclick="logoutUser()">Dil nga llogaria</button>
-    <button type="button" disabled>Settings · Coming soon</button>
-</div>
+        <button type="button" id="logoutBtn" onclick="logoutUser()">
+            Dil nga llogaria
+        </button>
+
+        <button type="button" disabled>
+            Settings · Coming soon
+        </button>
+    </div>
+
+    <!-- Navigation -->
     <header class="top-header">
 
-<nav class="navbar">
+        <nav class="navbar">
 
-<div class="nav-title">
-    <span>Arkiva Studentore</span>
-    <img src="logo/LOGO.png" alt="Logo" class="navbar-logo">
-</div>
+            <div class="nav-title">
+                <span>Arkiva Studentore</span>
 
-    <div class="nav-right">
+                <img
+                    src="logo/LOGO.png"
+                    alt="Arkiva Studentore Logo"
+                    class="navbar-logo">
+            </div>
 
-       <div class="search-wrapper">
+            <div class="nav-right">
 
-    <i data-lucide="search" class="search-icon"></i>
+                <div class="search-wrapper">
+                    <i data-lucide="search" class="search-icon"></i>
 
-    <input
+                    <input
+                        id="searchInput"
+                        class="search-bar"
+                        type="text"
+                        placeholder="Kërko për një kurs...">
+                </div>
 
-        class="search-bar"
+                <div class="user-menu">
+                    <a
+                        id="userBtn"
+                        class="user-btn"
+                        href="auth/login.html"
+                        title="Login">
 
-        type="text"
+                        <i data-lucide="user-round"></i>
 
-        placeholder="Kërko për një kurs..."
+                    </a>
+                </div>
 
-    >
+                <button id="theme-toggle">
+                    🌙
+                </button>
 
-</div>
+            </div>
 
-<div class="user-menu">
-    <a href="auth/login.html" id="userBtn" class="user-btn" title="Login">
-        <span class="user-icon">👤</span>
-    </a>
+        </nav>
 
-</div>
+    </header>
 
-<button id="theme-toggle">🌙</button>
+    <!-- Welcome Popup -->
+    <div id="overlay">
 
-    </div>
+        <div id="popup">
 
-</nav>
+            <h2 class="popuplabel">📚 Njoftim</h2>
 
-  </header>
+            <p>
+                Materialet, leksionet dhe tezat e publikuara në këtë faqe janë
+                vendosur me qëllim studimi dhe përgatitjeje akademike.
+                Këto materiale nuk synojnë të zëvendësojnë pjesëmarrjen në
+                leksione apo të përdoren për kopjim gjatë provimeve.
+                Ju lutem përdorini me përgjegjësi dhe vetëm për qëllime mësimore.
+            </p>
 
-   
+            <button id="dismiss-btn">
+                Kuptoj
+            </button>
 
-
-<div id="overlay">
-    <div id="popup">
-        <h2 class="popuplabel">📚 Njoftim</h2>
-
-        <p>
-            Materialet, leksionet dhe tezat e publikuara në këtë faqe
-            janë vendosur me qëllim studimi dhe përgatitjeje akademike.
-            Këto materiale nuk synojnë të zëvendësojnë pjesëmarrjen
-            në leksione apo të përdoren për kopjim gjatë provimeve. 
-            Ju lutem përdorini me përgjegjësi dhe vetëm për qëllime mësimore.
-        </p>
-
-        <button id="dismiss-btn">Kuptoj</button>
-    </div>
-</div>
-
-
-<main>
-
-
-    <h2 class="section-title">KURSET</h2>
-
-<p id="noResults" style="display: none;">
-
-    ❌ Kursi nuk u gjet.
-
-</p>
-
-    <div class="courses-container">
-
-        <a href="courses/calculus1.html" class="card">
-
-            <h3>📘 Analizë Matematikë 1</h3>
-
-            <p>Ushtrime & Shenime rreth Analize Matematike 1</p>
-
-        </a>
-
-        <a href="courses/calculus2.html" class="card">
-
-            <h3>📗 Analizë Matematikë 2</h3>
-
-            <p>Cikel Leksionesh & Shenime rreth Analize Matematike 2</p>
-
-        </a>
-
-        <a href="courses/sistemeshfrytzimi.html" class="card">
-
-            <h3>🖥 Sisteme Shfrytëzimi</h3>
-
-            <p>Shenime & Ushtrime te zgjidhura</p>
-
-        </a>
-
-        <a href="courses/java.html" class="card">
-
-            <h3>☕ Programim në Java</h3>
-
-            <p>Shenime & Programe te ndertuara ne Java</p>
-
-        </a>
-
-        <a href="courses/dsa.html" class="card">
-
-            <h3>🌳 Strukturë të Dhënash</h3>
-
-            <p>Cikel Leksionesh, ushtrime dhe shenime</p>
-
-        </a>
+        </div>
 
     </div>
 
+    <!-- Main Content -->
+    <main>
 
-<h2 class="section-title">MJETE</h2>
+        <!-- Courses -->
+        <section>
 
-<div class="tools-grid">
-    <a href="tools/average.html" class="card">
-        <h3>🧮 Llogarit Mesataren</h3>
-        <p>Llogarit mesataren tende</p>
-    </a>
-</div>
+            <h2 class="section-title">KURSET</h2>
 
+            <p id="noResults" style="display:none;">
+                ❌ Kursi nuk u gjet.
+            </p>
 
-    <h2 class="section-title">ARKIVA</h2>
+            <div class="courses-container">
 
-    <div class="tools-grid">
-         <a href="courses/teza.html" class="card">
+                <a href="courses/calculus1.html" class="card">
+                    <h3>📘 Analizë Matematikë 1</h3>
+                    <p>Ushtrime & Shenime rreth Analize Matematike 1</p>
+                </a>
 
-            <h3>🗃 Arkiva e provimeve te kaluara</h3>
+                <a href="courses/calculus2.html" class="card">
+                    <h3>📗 Analizë Matematikë 2</h3>
+                    <p>Cikel Leksionesh & Shenime rreth Analize Matematike 2</p>
+                </a>
 
-            <p>Teza nga kurse te ndryshme</p>
+                <a href="courses/sistemeshfrytzimi.html" class="card">
+                    <h3>🖥 Sisteme Shfrytëzimi</h3>
+                    <p>Shenime & Ushtrime te zgjidhura</p>
+                </a>
 
-        </a>
-    </div>
+                <a href="courses/java.html" class="card">
+                    <h3>☕ Programim në Java</h3>
+                    <p>Shenime & Programe te ndertuara ne Java</p>
+                </a>
 
-</main>
+                <a href="courses/dsa.html" class="card">
+                    <h3>🌳 Strukturë të Dhënash</h3>
+                    <p>Cikel Leksionesh, ushtrime dhe shenime</p>
+                </a>
 
-<footer>
-    <p>Krijuar nga Anonymous, per studentet.</p>
-</footer>
+            </div>
 
-<button class="floating-add" id="addBtn">
-    <i data-lucide="plus"></i>
-</button>
+        </section>
 
+        <!-- Tools -->
+        <section>
 
+            <h2 class="section-title">MJETE</h2>
 
-<script src="https://unpkg.com/lucide@latest"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/main.js"></script>
+            <div class="tools-grid">
 
+                <a href="tools/average.html" class="card">
+                    <h3>🧮 Llogarit Mesataren</h3>
+                    <p>Llogarit mesataren tënde</p>
+                </a>
+
+            </div>
+
+        </section>
+
+        <!-- Archive -->
+        <section>
+
+            <h2 class="section-title">ARKIVA</h2>
+
+            <div class="tools-grid">
+
+                <a href="courses/teza.html" class="card">
+                    <h3>🗃 Arkiva e provimeve të kaluara</h3>
+                    <p>Teza nga kurse të ndryshme</p>
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>Krijuar nga Anonymous, për studentët.</p>
+    </footer>
+
+    <!-- Floating Action Button -->
+    <button id="addBtn" class="floating-add">
+        <i data-lucide="plus"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/main.js"></script>
 
 </body>
 
-
-
-
-    
 </html>

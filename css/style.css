@@ -428,7 +428,8 @@ body.dark .card:hover {
 =========================== */
 
 .user-menu {
-    position: relative;
+       display: flex;
+       flex-shrink: 0
 }
 
 #menuBlur {
@@ -1018,19 +1019,19 @@ body.dark hr {
         flex: 1;
     }
 
-    .search-bar {
-        width: 100%;
-        min-width: 0;
+       .search-bar {
+        height: 56px;
+        padding: 0 18px 0 54px;
+        box-sizing: border-box;
+
     }
 
     .user-btn,
     #theme-toggle {
         width: 56px;
         height: 56px;
-
         flex-shrink: 0;
 
-        border-radius: 18px;
     }
 
     h1 {
