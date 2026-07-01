@@ -10,6 +10,8 @@ if (localStorage.getItem("theme") === "dark") {
     document.body.classList.add("dark");
 }
 
+lucide.createIcons();
+
 if (window.supabase) {
     supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 }
