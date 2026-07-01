@@ -234,13 +234,13 @@ const popup = document.getElementById("overlay");
 const dismissBtn = document.getElementById("dismiss-btn");
 
 if (popup && dismissBtn) {
-    if (localStorage.getItem("noticeAccepted")) {
-        popup.style.display = "none";
+    if (localStorage.getItem("noticeAccepted") === "true") {
+        popup.classList.add("hidden");
     }
 
     dismissBtn.addEventListener("click", () => {
         localStorage.setItem("noticeAccepted", "true");
-        popup.style.display = "none";
+        popup.classList.add("hidden");
     });
 }
 

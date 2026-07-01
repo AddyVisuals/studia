@@ -2,9 +2,19 @@
    GLOBAL
 =========================== */
 
+html {
+
+    min-height: 100%;
+
+    background: #121212; /* or #fafafa in light mode */
+
+}
+
+
 body {
     margin: 0;
     padding: 40px;
+     min-height: 100vh;
     line-height: 1.6;
 
     font-family:
@@ -16,6 +26,7 @@ body {
         sans-serif;
 
     color: black;
+        background:transparent;
 
     background:
         radial-gradient(circle at top left, rgba(80,140,255,.18), transparent 35%),
@@ -131,10 +142,11 @@ body.dark .top-header {
     padding: 0;
 }
 
-.nav-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.nav-right{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    width:100%;
 }
 
 
@@ -142,9 +154,10 @@ body.dark .top-header {
    SEARCH
 =========================== */
 
-.search-wrapper {
-    position: relative;
-    flex: 1;
+.search-wrapper{
+    position:relative;
+    flex:1;
+    min-width:0;   /* VERY IMPORTANT */
 }
 
 .search-icon {
@@ -166,12 +179,12 @@ body.dark .top-header {
 .search-bar {
     position: relative;
     z-index: 1;
+    width: 100%;
+    padding: 0 18px 0 56px;
+    box-sizing: border-box;
+    height: 56px;
 
-    width: 700px;
-    max-width: 850px;
-    height: 30px;
 
-    padding: 17px 18px 17px 58px;
 
     font-size: 16px;
 
@@ -246,8 +259,9 @@ body.dark .search-icon {
 
 .user-btn,
 #theme-toggle {
-    width: 64px;
-    height: 64px;
+    width: 56px;
+    height: 56px;
+    flex: 0 0 56px;
 
     display: flex;
     justify-content: center;
@@ -428,8 +442,7 @@ body.dark .card:hover {
 =========================== */
 
 .user-menu {
-       display: flex;
-       flex-shrink: 0
+    position: relative;
 }
 
 #menuBlur {
@@ -817,62 +830,56 @@ body.dark .calculator-card {
 /* ===========================
    POPUP
 =========================== */
-
 #overlay {
     position: fixed;
     inset: 0;
+    z-index: 9999;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
-    background: rgba(0,0,0,.19);
+    background: rgba(0,0,0,.18);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 
-    backdrop-filter: blur(1px);
+    opacity: 1;
+    visibility: visible;
+}
 
-    z-index: 9999;
+#overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
 }
 
 #popup {
-    max-width: 500px;
+    width: min(520px, 90%);
+    padding: 32px;
 
-    padding: 20px;
+    border-radius: 22px;
+    background: rgba(255,255,255,.9);
 
-    border-radius: 12px;
-
-    background: white;
-
-    box-shadow: 0 15px 40px rgba(0,0,0,.25);
+    box-shadow: 0 20px 60px rgba(0,0,0,.20);
 
     text-align: center;
-
-    animation: popupAppear .35s ease;
 }
 
-.popuplabel {
-    color: white;
-}
-
-body.dark #popup {
-    background: #1f1f1f;
-    color: white;
+#popup p {
+    line-height: 1.7;
 }
 
 #dismiss-btn {
     margin-top: 20px;
-
-    padding: 12px 24px;
-
-    border-radius: 12px;
-
-    background: white;
-    color: black;
-}
-
-#dismiss-btn:hover {
-    background: #1d4ed8;
+    background: blue;
     color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    padding: 18px;
+    border-radius: 10px;
 }
+
+
 
 @keyframes popupAppear {
     from {
@@ -972,6 +979,109 @@ body.dark hr {
 }
 
 
+
+
+
+/* ===========================
+   CALCULATOR PAGE POLISH
+=========================== */
+
+.calculator-card {
+    max-width: 1000px;
+    margin: 80px auto 40px;
+
+    padding: 48px;
+
+    border-radius: 28px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.88),
+            rgba(245,248,255,.68)
+        );
+
+    border: 1px solid rgba(255,255,255,.70);
+
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+
+    box-shadow:
+        inset 0 1px 1px rgba(255,255,255,.85),
+        0 22px 55px rgba(0,0,0,.10);
+}
+
+.calculator-card h1 {
+    margin-bottom: 24px;
+}
+
+.grades {
+    display: flex;
+    gap: 14px;
+    margin: 28px 0;
+    flex-wrap: wrap;
+}
+
+.grades input {
+    width: 150px;
+    height: 48px;
+
+    padding: 0 14px;
+
+    border-radius: 14px;
+
+    border: 1px solid rgba(0,0,0,.08);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.9),
+            rgba(245,248,255,.7)
+        );
+
+    font-size: 1rem;
+}
+
+.calculator-card button {
+    height: 48px;
+
+    padding: 0 28px;
+
+    border-radius: 14px;
+
+    background: #2563eb;
+    color: white;
+
+    font-weight: 600;
+}
+
+body.dark .calculator-card {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(35,35,42,.92),
+            rgba(18,22,32,.82)
+        );
+
+    border: 1px solid rgba(255,255,255,.08);
+}
+
+body.dark .grades input {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(35,35,42,.92),
+            rgba(18,22,32,.82)
+        );
+
+    color: white;
+
+    border: 1px solid rgba(255,255,255,.12);
+}
+
+
+
+
 /* ===========================
    RESPONSIVE
 =========================== */
@@ -1004,33 +1114,48 @@ body.dark hr {
     }
 
      .nav-title .navbar-logo {
+
         width: 34px !important;
         height: 34px !important;
+
+    }
+   .nav-right{
+
+        display:flex;
+
+        align-items:center;
+
+        gap:10px;
+
+        width:100%;
+
     }
 
-    .nav-right {
-        width: 100%;
+    .search-wrapper{
 
-        display: flex;
-        gap: 12px;
+        flex:1;
+
+        min-width:0;
+
     }
 
-    .search-wrapper {
-        flex: 1;
-    }
+    .search-bar{
 
-       .search-bar {
-        height: 56px;
-        padding: 0 18px 0 54px;
-        box-sizing: border-box;
+        width:100%;
+
+        height:56px;
 
     }
 
     .user-btn,
-    #theme-toggle {
-        width: 56px;
-        height: 56px;
-        flex-shrink: 0;
+
+    #theme-toggle{
+
+        flex:0 0 56px;
+
+        width:56px;
+
+        height:56px;
 
     }
 
