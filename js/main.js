@@ -6,6 +6,10 @@ const SUPABASE_ANON_KEY = "sb_publishable_mBChC2kALj9BVq1ht0T3-w_xPIoye22";
 
 let supabaseClient = null;
 
+if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark");
+}
+
 if (window.supabase) {
     supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 }
@@ -204,23 +208,21 @@ if (loginForm && supabaseClient) {
 const themeButton = document.getElementById("theme-toggle");
 
 if (themeButton) {
-    if (localStorage.getItem("theme") === "dark") {
-        document.body.classList.add("dark");
-        themeButton.textContent = "☀️";
-    } else {
-        themeButton.textContent = "🌙";
-    }
+    themeButton.textContent = document.body.classList.contains("dark")
+        ? "☀️"
+        : "🌙";
 
     themeButton.addEventListener("click", () => {
         document.body.classList.toggle("dark");
 
-        if (document.body.classList.contains("dark")) {
-            localStorage.setItem("theme", "dark");
-            themeButton.textContent = "☀️";
-        } else {
-            localStorage.setItem("theme", "light");
-            themeButton.textContent = "🌙";
-        }
+        localStorage.setItem(
+            "theme",
+            document.body.classList.contains("dark") ? "dark" : "light"
+        );
+
+        themeButton.textContent = document.body.classList.contains("dark")
+            ? "☀️"
+            : "🌙";
     });
 }
 
