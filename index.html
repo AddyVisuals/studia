@@ -94,12 +94,17 @@
     </div>
 </div>
     <!-- Main Content -->
-    <main>
+  <main>
 
-        <!-- Courses -->
-        <section>
+    <!-- Courses -->
+    <section class="collapsible-section">
 
-            <h2 class="section-title">KURSET</h2>
+        <button class="section-header" type="button">
+            <span>KURSET</span>
+            <i data-lucide="chevron-down" class="section-chevron"></i>
+        </button>
+
+        <div class="section-content">
 
             <p id="noResults" style="display:none;">
                 ❌ Kursi nuk u gjet.
@@ -107,87 +112,137 @@
 
             <div class="courses-container">
 
-                <a href="courses/calculus1.html" class="card">
-                    <h3><span>
-                        <img src="logo/calc.svg" alt="Logo" class="course-logo">
-                    </span>Analizë Matematike 1</h3>
+                <a href="courses/calculus1.html" class="card"><span class="verified-badge">
+        <i data-lucide="badge-check"></i>
+        Verifikuar
+    </span>
+                    <h3>
+                        <img src="logo/calc.svg" alt="" class="course-logo">
+                        Analizë Matematike 1
+                    </h3>
                     <p>Ushtrime & Shenime rreth Analize Matematike 1</p>
                 </a>
 
-                <a href="courses/calculus2.html" class="card">
-                    <h3><span>
-                        <img src="logo/calc.svg" alt="Logo" class="course-logo">
-                    </span>Analizë Matematike 2</h3>
+                <a href="courses/calculus2.html" class="card"><span class="verified-badge">
+        <i data-lucide="badge-check"></i>
+        Verifikuar
+    </span>
+                    <h3>
+                        <img src="logo/calc.svg" alt="" class="course-logo">
+                        Analizë Matematike 2
+                    </h3>
                     <p>Cikel Leksionesh & Shenime rreth Analize Matematike 2</p>
                 </a>
 
-                <a href="courses/sistemeshfrytzimi.html" class="card">
-                    <h3><span>
-                        <img src="logo/gear.svg" alt="Logo" class="course-logo">
-                    </span>Sisteme Shfrytzimi</h3>
+                <a href="courses/sistemeshfrytzimi.html" class="card"><span class="verified-badge">
+        <i data-lucide="badge-check"></i>
+        Verifikuar
+    </span>
+                    <h3>
+                        <img src="logo/gear.svg" alt="" class="course-logo">
+                        Sisteme Shfrytëzimi
+                    </h3>
                     <p>Shenime & Ushtrime te zgjidhura</p>
                 </a>
 
-                <a href="courses/java.html" class="card">
-                    <h3><span>
-                        <img src="logo/java.svg" alt="Logo" class="course-logo">
-                    </span>Programim në Java</h3>
+                <a href="courses/java.html" class="card"><span class="verified-badge">
+        <i data-lucide="badge-check"></i>
+        Verifikuar
+    </span>
+                    <h3>
+                        <img src="logo/java.svg" alt="" class="course-logo">
+                        Programim në Java
+                    </h3>
                     <p>Shenime & Programe te ndertuara ne Java</p>
                 </a>
 
-                <a href="courses/dsa.html" class="card">
-                    <h3><span>
-                        <img src="logo/dsa.png" alt="Logo" class="course-logo">
-                    </span>Strukturë të Dhënash</h3>
+                <a href="courses/dsa.html" class="card"><span class="verified-badge">
+        <i data-lucide="badge-check"></i>
+        Verifikuar
+    </span>
+                    <h3>
+                        <img src="logo/dsa.png" alt="" class="course-logo">
+                        Strukturë të Dhënash
+                    </h3>
                     <p>Cikel Leksionesh, ushtrime dhe shenime</p>
                 </a>
 
             </div>
 
-        </section>
+        </div>
 
-        <!-- Tools -->
-        <section>
+    </section>
 
-            <h2 class="section-title">MJETE</h2>
+
+    <!--Added by user-->
+
+
+    <section class="collapsible-section" id="userCoursesSection" style="display:none;">
+    <button class="section-header" type="button">
+        <span>SHTUAR NGA STUDENTET</span>
+        <i data-lucide="chevron-down" class="section-chevron"></i>
+    </button>
+
+    <div class="section-content">
+        <div id="userCoursesContainer" class="courses-container"></div>
+    </div>
+</section>
+
+    <!-- Tools -->
+    <section class="collapsible-section">
+
+        <button class="section-header" type="button">
+            <span>MJETE</span>
+            <i data-lucide="chevron-down" class="section-chevron"></i>
+        </button>
+
+        <div class="section-content">
 
             <div class="tools-grid">
 
                 <a href="tools/average.html" class="card">
-                    <h3><span>
-                        <img src="logo/avg.png" alt="Logo" class="course-logo">
-                    </span>Llogarit Mesataren</h3>
+                    <h3>
+                        <img src="logo/avg.png" alt="" class="course-logo">
+                        Llogarit Mesataren
+                    </h3>
                     <p>Llogarit mesataren tënde</p>
                 </a>
 
             </div>
 
-        </section>
+        </div>
 
-        <!-- Archive -->
-        <section>
+    </section>
 
-            <h2 class="section-title">ARKIVA</h2>
+    <!-- Archive -->
+    <section class="collapsible-section">
+
+        <button class="section-header" type="button">
+            <span>ARKIVA</span>
+            <i data-lucide="chevron-down" class="section-chevron"></i>
+        </button>
+
+        <div class="section-content">
 
             <div class="tools-grid">
 
                 <a href="courses/teza.html" class="card">
-                    <h3><span>
-                        <img src="logo/exam.svg" alt="Logo" class="course-logo">
-                    </span>Arkiva e provimeve të kaluara</h3>
+                    <h3>
+                        <img src="logo/exam.svg" alt="" class="course-logo">
+                        Arkiva e provimeve të kaluara
+                    </h3>
                     <p>Teza nga kurse të ndryshme</p>
                 </a>
 
             </div>
 
-        </section>
+        </div>
 
-    </main>
+    </section>
 
-    <!-- Footer -->
-    <footer>
-        <p>Krijuar nga Anonymous, për studentët.</p>
-    </footer>
+</main>
+
+
 
     <!-- Floating Action Button -->
     <button id="addBtn" class="floating-add">
@@ -210,13 +265,15 @@
 
         <p id="courseMessage"></p>
 
-       <div class="modal-actions">
+      <div class="modal-actions">
     <button id="submitCourseBtn" class="submit-btn" type="button">
-        Dërgo kursin
+        <i data-lucide="save"></i>
+        <span>Ruaj kursin</span>
     </button>
 
     <button id="closeCourseModal" class="cancel-btn" type="button">
-        Mbyll
+        <i data-lucide="x"></i>
+        <span>Mbyll</span>
     </button>
 </div>
 
@@ -225,7 +282,9 @@
 
 
 
-
+<footer>
+    <p>Arkiva Studentore – Te gjitha te drejtat e rezervuara</p>
+</footer>
 
 
 

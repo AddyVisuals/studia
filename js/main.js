@@ -404,6 +404,18 @@ const addBtn = document.getElementById("addBtn");
 const addCourseModal = document.getElementById("addCourseModal");
 const closeCourseModal = document.getElementById("closeCourseModal");
 const submitCourseBtn = document.getElementById("submitCourseBtn");
+
+function closeCourseModalWithAnimation() {
+    addCourseModal.classList.remove("show");
+    addCourseModal.classList.add("closing");
+
+    setTimeout(() => {
+        addCourseModal.classList.remove("closing");
+    }, 300);
+}
+
+
+
 if (addBtn && addCourseModal) {
     addBtn.addEventListener("click", () => {
         addCourseModal.classList.add("show");
@@ -411,10 +423,9 @@ if (addBtn && addCourseModal) {
 }
 
 if (closeCourseModal && addCourseModal) {
-    closeCourseModal.addEventListener("click", () => {
-        addCourseModal.classList.remove("show");
-    });
+  closeCourseModal.addEventListener("click", closeCourseModalWithAnimation);
 }
+
 
 if (submitCourseBtn && supabaseClient) {
     submitCourseBtn.addEventListener("click", async () => {
@@ -461,10 +472,120 @@ if (submitCourseBtn && supabaseClient) {
         message.style.color = "green";
 
         setTimeout(() => {
-            addMaterialModal.classList.remove("show");
+            closeCourseModalWithAnimation();
         }, 1800);
+    });
+
+
+
+if (submitCourseBtn && supabaseClient) {
+    submitCourseBtn.addEventListener("click", async () => {
+        const title = document.getElementById("courseTitle").value.trim();
+        const icon = document.getElementById("courseIcon").value.trim();
+        const description = document.getElementById("courseDescription").value.trim();
+        const courseLink = document.getElementById("courseLink").value.trim();
+        const message = document.getElementById("courseMessage");
+
+        if (!title || !description) {
+            message.textContent = "Plotëso emrin dhe përshkrimin e kursit.";
+            message.style.color = "red";
+            return;
+        }
+
+        const { data: { user } } = await supabaseClient.auth.getUser();
+
+        if (!user) {
+            message.textContent = "Duhet të jesh i kyçur për të shtuar kurs.";
+            message.style.color = "red";
+            return;
+        }
+
+        const { error } = await supabaseClient
+            .from("courses")
+            .insert({
+                title,
+                icon: icon || "📘",
+                description,
+                course_link: courseLink || null,
+                user_id: user.id,
+                approved: false
+            });
+
+        if (error) {
+            message.textContent = error.message;
+            message.style.color = "red";
+            return;
+        }
+
+        message.textContent = "Kursi u dërgua! Do të shfaqet pasi të aprovohet.";
+        message.style.color = "green";
+
+        setTimeout(() => {
+            closeCourseModalWithAnimation();
+        }, 1500);
     });
 }
 
 
+
+}
+
+
+
+
+document.querySelectorAll(".collapsible-section").forEach(section => {
+
+    const header = section.querySelector(".section-header");
+
+    header.addEventListener("click", () => {
+
+        section.classList.toggle("collapsed");
+
+    });
+
+});
+
+
+async function loadUserCourses() {
+
+
+
+    
+    const section = document.getElementById("userCoursesSection");
+    const container = document.getElementById("userCoursesContainer");
+
+    if (!section || !container || !supabaseClient) return;
+
+    const { data, error } = await supabaseClient
+    .from("courses")
+    .select("*")
+    .eq("approved", true)
+    .order("created_at", { ascending: false });
+console.log("Approved courses:", data);
+console.log("Error:", error);
+
+
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    if (!data || data.length === 0) {
+        section.style.display = "none";
+        return;
+    }
+
+    section.style.display = "block";
+
+    container.innerHTML = data.map(course => `
+        <a href="${course.course_link || "#"}" class="card" target="_blank">
+            <h3>${course.icon || "📘"} ${course.title}</h3>
+            <p>${course.description || ""}</p>
+        </a>
+    `).join("");
+}
+
+
+
+loadUserCourses();
 

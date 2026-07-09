@@ -3,7 +3,7 @@
 =========================== */
 
 html {
-
+scrollbar-width: none;
     min-height: 100%;
 
     background: #121212; /* or #fafafa in light mode */
@@ -35,6 +35,8 @@ body {
         #fafafa;
 
     transition: background-color .3s ease, color .3s ease;
+
+   
 }
 
 body.dark {
@@ -1122,11 +1124,11 @@ body.dark .grades input {
 
 .course-page {
     max-width: 900px;
-    margin: 70px auto;
+    margin: 35px auto;
 }
 
 .course-hero {
-    padding: 42px;
+    padding: 25px;
     border-radius: 30px;
     margin-bottom: 28px;
 
@@ -1581,7 +1583,7 @@ body.dark .course-content::-webkit-scrollbar-thumb {
 
 
 /* ===========================
-  ADD MODEL
+  ADD MODAL
 =========================== */
 
 .add-modal {
@@ -1589,24 +1591,52 @@ body.dark .course-content::-webkit-scrollbar-thumb {
     inset: 0;
     z-index: 7000;
 
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
 
-    background: rgba(0,0,0,.18);
-    backdrop-filter: blur(6px);
+    background: rgba(0,0,0,0);
+    backdrop-filter: blur(0px);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+        opacity .28s ease,
+        background .28s ease,
+        backdrop-filter .28s ease;
 }
 
-.add-modal-card label{
-    display:block;
+.add-modal.show,
+.add-modal.closing {
+    visibility: visible;
+}
 
-    margin-bottom:10px;
-    margin-top:8px;
+.add-modal.show {
+    opacity: 1;
+    pointer-events: auto;
+    background: rgba(0,0,0,.22);
+    backdrop-filter: blur(8px);
+}
 
-    font-size:.95rem;
-    font-weight:600;
+.add-modal-card {
+    transform: translateY(24px) scale(.94);
+    opacity: 0;
 
-    opacity:.7;
+    transition:
+        transform .34s cubic-bezier(.16,1,.3,1),
+        opacity .25s ease;
+}
+
+.add-modal.show .add-modal-card {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+.add-modal.closing .add-modal-card {
+    transform: translateY(18px) scale(.96);
+    opacity: 0;
 }
 
 .modal-actions{
@@ -1621,7 +1651,10 @@ body.dark .course-content::-webkit-scrollbar-thumb {
 .cancel-btn{
     border:none;
     border-radius:18px;
-
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
     padding:18px 32px;
 
     font-size:1.08rem;
@@ -1638,6 +1671,15 @@ min-width:220px;
     box-shadow:
         0 8px 22px rgba(47,107,255,.28);
 }
+
+
+.submit-btn svg, .cancel-btn svg {
+    width: 22px;
+    height: 22px;
+    stroke-width: 2.4;
+}
+
+
 
 .submit-btn:hover{
     background:#4b82ff;
@@ -1675,6 +1717,15 @@ min-width:220px;
 
     background: rgba(255,255,255,.9);
     box-shadow: 0 24px 70px rgba(0,0,0,.18);
+
+
+transform: translateY(18px) scale(.96);
+opacity: 0;
+
+transition: transform .32s cubic-bezier(.2, .8, .2, 1),
+opacity .25s ease;
+
+
 }
 
 .add-modal-card input,
@@ -1733,3 +1784,183 @@ body.dark .cancel-btn{
 body.dark .cancel-btn:hover{
     background:#363944;
 }
+
+
+/* ===========================
+   COLLAPSIBLE SECTIONS
+=========================== */
+
+.collapsible-section{
+    margin-top:42px;
+}
+
+.section-header {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    background: none;
+    border: none;
+    padding: 12px;
+
+    cursor: pointer;
+
+    font: inherit;
+    color: inherit;
+}
+
+.section-header:hover{
+    opacity:.75;
+}
+
+.section-chevron {
+    width: 22px;
+    height: 22px;
+}
+
+.section-chevron svg {
+    stroke-width: 2.8;
+}
+
+.collapsible-section.collapsed .section-chevron{
+
+    transform:rotate(-90deg);
+
+}
+
+.section-content{
+
+
+    max-height:2500px;
+    opacity:1;
+   
+    transition:
+        max-height .45s cubic-bezier(.16,1,.3,1),
+        opacity .25s ease;
+
+}
+
+.collapsible-section.collapsed .section-content{
+
+    max-height:0;
+
+    opacity:0;
+
+}
+
+.section-content .card{
+
+    transition:
+        transform .35s cubic-bezier(.16,1,.3,1),
+        opacity .28s ease;
+
+}
+
+.collapsible-section.collapsed .card{
+
+    transform:translateY(-10px);
+
+    opacity:0;
+
+}
+
+.section-header span {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: .02em;
+}
+
+
+.section-header:hover .section-chevron{
+
+    color:#053dc1;
+    opacity:1;
+}
+
+
+
+
+
+
+body.dark .section-header{
+
+    color:#f6f6f6;
+}
+
+body.dark .section-header:hover{
+
+    color:white;
+}
+
+
+.card{
+    position:relative;
+}
+
+
+@keyframes badgePop {
+    0% {
+        opacity:0;
+        transform:scale(.85);
+    }
+    70%{
+        transform:scale(1.05);
+    }
+    100%{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+.verified-badge{
+    position:absolute;
+    top:16px;
+    right:16px;
+
+    display:flex;
+    align-items:center;
+    gap:6px;
+
+    padding:5px 10px;
+
+    border-radius:999px;
+
+    font-size:.72rem;
+    font-weight:600;
+
+    background:#2f6bff;
+    color:#fff;
+
+    box-shadow:0 8px 20px rgba(47,107,255,.18);
+
+    /* Hidden by default */
+    opacity:0;
+    transform:translateY(-6px) scale(.95);
+
+    pointer-events:none;
+
+
+    transition:
+        opacity .25s ease,
+        transform .25s ease;
+}
+
+.verified-badge svg{
+    width:13px;
+    height:13px;
+    stroke-width:2.3;
+}
+
+
+.card:hover .verified-badge{
+    opacity:1;
+    transform:translateY(0) scale(1);
+}
+
+
+body.dark .verified-badge{
+    background:#3a74ff;
+    color:white;
+}
+
+
