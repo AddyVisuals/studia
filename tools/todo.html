@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="sq">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Arkiva e Studentit</title>
+
+<link rel="icon" type="image/png" href="../logo/FAV.png">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+
+
+<body>
+
+<main class="todo-page">
+
+    <section class="todo-card">
+
+        <div class="todo-header">
+            <div>
+                <h1>Lista e Detyrave</h1>
+                <p>Organizo studimet e tua.</p>
+            </div>
+
+            <span id="todoProgress" class="todo-progress">0 / 0</span>
+        </div>
+
+        <div class="todo-input-row">
+    <input id="todoInput" type="text" placeholder="Çfarë duhet të studiosh sot?">
+
+    <select id="todoCourse">
+        <option value="Personal" selected>📁 Personal</option>
+<option value="Analizë 1">📘 Analizë 1</option>
+<option value="Analizë 2">📗 Analizë 2</option>
+<option value="Java">☕ Java</option>
+<option value="DSA">🌳 DSA</option>
+<option value="OS">⚙️ OS</option>
+    </select>
+
+    <button id="addTodoBtn" type="button">
+        <i data-lucide="plus"></i>
+        Shto
+    </button>
+</div>
+
+        <div id="todoList" class="todo-list"></div>
+
+        <p id="todoEmpty" class="todo-empty">
+            🎉 Nuk ke asnjë detyrë. Shto një për të filluar.
+        </p>
+
+    </section>
+
+    <a href="../index.html" class="back-button">← Faqja Kryesore</a>
+
+</main>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+    lucide.createIcons();
+</script>
+
+<script src="../js/todo.js"></script>
+
+</body>
+
+
+
+
+
+
+
+
+</html>

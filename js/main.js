@@ -589,3 +589,6 @@ console.log("Error:", error);
 
 loadUserCourses();
 
+
+
+
