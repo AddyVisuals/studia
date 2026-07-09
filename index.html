@@ -108,27 +108,37 @@
             <div class="courses-container">
 
                 <a href="courses/calculus1.html" class="card">
-                    <h3>📘 Analizë Matematikë 1</h3>
+                    <h3><span>
+                        <img src="../logo/calc.svg" alt="Logo" class="course-logo">
+                    </span>Analizë Matematike 1</h3>
                     <p>Ushtrime & Shenime rreth Analize Matematike 1</p>
                 </a>
 
                 <a href="courses/calculus2.html" class="card">
-                    <h3>📗 Analizë Matematikë 2</h3>
+                    <h3><span>
+                        <img src="../logo/calc.svg" alt="Logo" class="course-logo">
+                    </span>Analizë Matematike 2</h3>
                     <p>Cikel Leksionesh & Shenime rreth Analize Matematike 2</p>
                 </a>
 
                 <a href="courses/sistemeshfrytzimi.html" class="card">
-                    <h3>🖥 Sisteme Shfrytëzimi</h3>
+                    <h3><span>
+                        <img src="../logo/gear.svg" alt="Logo" class="course-logo">
+                    </span>Sisteme Shfrytzimi</h3>
                     <p>Shenime & Ushtrime te zgjidhura</p>
                 </a>
 
                 <a href="courses/java.html" class="card">
-                    <h3>☕ Programim në Java</h3>
+                    <h3><span>
+                        <img src="../logo/java.svg" alt="Logo" class="course-logo">
+                    </span>Programim në Java</h3>
                     <p>Shenime & Programe te ndertuara ne Java</p>
                 </a>
 
                 <a href="courses/dsa.html" class="card">
-                    <h3>🌳 Strukturë të Dhënash</h3>
+                    <h3><span>
+                        <img src="../logo/dsa.png" alt="Logo" class="course-logo">
+                    </span>Strukturë të Dhënash</h3>
                     <p>Cikel Leksionesh, ushtrime dhe shenime</p>
                 </a>
 
@@ -144,7 +154,9 @@
             <div class="tools-grid">
 
                 <a href="tools/average.html" class="card">
-                    <h3>🧮 Llogarit Mesataren</h3>
+                    <h3><span>
+                        <img src="../logo/avg.png" alt="Logo" class="course-logo">
+                    </span>Llogarit Mesataren</h3>
                     <p>Llogarit mesataren tënde</p>
                 </a>
 
@@ -160,7 +172,9 @@
             <div class="tools-grid">
 
                 <a href="courses/teza.html" class="card">
-                    <h3>🗃 Arkiva e provimeve të kaluara</h3>
+                    <h3><span>
+                        <img src="../logo/exam.svg" alt="Logo" class="course-logo">
+                    </span>Arkiva e provimeve të kaluara</h3>
                     <p>Teza nga kurse të ndryshme</p>
                 </a>
 
@@ -179,6 +193,41 @@
     <button id="addBtn" class="floating-add">
         <i data-lucide="plus"></i>
     </button>
+
+<!--Modal-->
+<div id="addCourseModal" class="add-modal">
+    <div class="add-modal-card">
+
+        <h2>Krijo kurs të ri</h2>
+
+        <input id="courseTitle" type="text" placeholder="Emri i kursit">
+
+        <input id="courseIcon" type="text" placeholder="Ikona, p.sh. 📘">
+
+        <textarea id="courseDescription" placeholder="Përshkrimi i kursit"></textarea>
+
+        <input id="courseLink" type="url" placeholder="Link opsional, p.sh. Google Drive">
+
+        <p id="courseMessage"></p>
+
+       <div class="modal-actions">
+    <button id="submitCourseBtn" class="submit-btn" type="button">
+        Dërgo kursin
+    </button>
+
+    <button id="closeCourseModal" class="cancel-btn" type="button">
+        Mbyll
+    </button>
+</div>
+
+    </div>
+</div>
+
+
+
+
+
+
 
     <!-- Scripts -->
     <script src="https://unpkg.com/lucide@latest"></script>

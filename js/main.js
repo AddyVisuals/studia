@@ -1,3 +1,6 @@
+
+
+
 let resultTimer;
 let clearTextTimer;
 
@@ -5,6 +8,8 @@ const SUPABASE_URL = "https://idewhnsdndbfgggvhfuq.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_mBChC2kALj9BVq1ht0T3-w_xPIoye22";
 
 let supabaseClient = null;
+
+
 
 if (localStorage.getItem("theme") === "dark") {
     document.body.classList.add("dark");
@@ -376,3 +381,90 @@ const currentPage = window.location.pathname.split("/").pop();
 if (protectedPages.includes(currentPage)) {
     requireLogin();
 }
+
+
+
+/*DROPDOWN*/
+
+document.querySelectorAll(".course-toggle").forEach(button => {
+    button.addEventListener("click", () => {
+        const box = button.closest(".course-box");
+        box.classList.toggle("open");
+
+        const icon = button.querySelector("span");
+        icon.textContent = box.classList.contains("open") ? "−" : "+";
+    });
+});
+
+
+
+/*ADD BUTTON*/
+
+const addBtn = document.getElementById("addBtn");
+const addCourseModal = document.getElementById("addCourseModal");
+const closeCourseModal = document.getElementById("closeCourseModal");
+const submitCourseBtn = document.getElementById("submitCourseBtn");
+if (addBtn && addCourseModal) {
+    addBtn.addEventListener("click", () => {
+        addCourseModal.classList.add("show");
+    });
+}
+
+if (closeCourseModal && addCourseModal) {
+    closeCourseModal.addEventListener("click", () => {
+        addCourseModal.classList.remove("show");
+    });
+}
+
+if (submitCourseBtn && supabaseClient) {
+    submitCourseBtn.addEventListener("click", async () => {
+        const title = document.getElementById("materialTitle").value.trim();
+        const course = document.getElementById("materialCourse").value;
+        const driveLink = document.getElementById("materialLink").value.trim();
+        const description = document.getElementById("materialDescription").value.trim();
+        const message = document.getElementById("materialMessage");
+
+        if (!title || !course || !driveLink) {
+            message.textContent = "Plotëso titullin, kursin dhe linkun.";
+            message.style.color = "red";
+            return;
+        }
+
+        const {
+            data: { user }
+        } = await supabaseClient.auth.getUser();
+
+        if (!user) {
+            message.textContent = "Duhet të jesh i kyçur për të shtuar material.";
+            message.style.color = "red";
+            return;
+        }
+
+       const { error } = await supabaseClient
+    .from("courses")
+    .insert({
+        title,
+        description,
+        icon,
+        course_link: courseLink,
+        user_id: user.id,
+        approved: false
+    });
+
+        if (error) {
+            message.textContent = error.message;
+            message.style.color = "red";
+            return;
+        }
+
+        message.textContent = "Materiali u dërgua! Do të shfaqet pasi të aprovohet.";
+        message.style.color = "green";
+
+        setTimeout(() => {
+            addMaterialModal.classList.remove("show");
+        }, 1800);
+    });
+}
+
+
+
