@@ -1,6 +1,3 @@
-
-
-
 let resultTimer;
 let clearTextTimer;
 
@@ -15,7 +12,9 @@ if (localStorage.getItem("theme") === "dark") {
     document.body.classList.add("dark");
 }
 
-lucide.createIcons();
+if (window.lucide) {
+    window.lucide.createIcons();
+}
 
 if (window.supabase) {
     supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -31,7 +30,7 @@ function getLoginPath() {
         path.includes("/tools/") ||
         path.includes("/auth/")
     ) {
-        return "../auth/login.html";
+        return "login.html";
     }
 
     return "auth/login.html";
@@ -589,6 +588,197 @@ console.log("Error:", error);
 
 loadUserCourses();
 
+
+
+
+async function loadHomepageGreeting() {
+    const panel = document.getElementById("welcomePanel");
+
+    if (!panel) return;
+
+    const greetingElement = document.getElementById("timeGreeting");
+    const nameElement = document.getElementById("welcomeName");
+    const messageElement = document.getElementById("welcomeMessage");
+    const tasksElement = document.getElementById("remainingTasks");
+    const pendingElement = document.getElementById("pendingCourses");
+    const pendingCard = document.getElementById("pendingCoursesCard");
+
+    /* Time-based greeting */
+
+    const hour = new Date().getHours();
+
+    let greeting = "Mirëdita";
+
+    if (hour < 12) {
+        greeting = "Mirëmëngjes";
+    } else if (hour >= 18) {
+        greeting = "Mirëmbrëma";
+    }
+
+    greetingElement.textContent = greeting;
+
+    /* Local To-Do tasks */
+
+    let todos = [];
+
+    try {
+        todos = JSON.parse(localStorage.getItem("todos")) || [];
+    } catch (error) {
+        console.warn("Could not read saved tasks:", error);
+    }
+
+    const remainingTasks = todos.filter(todo => !todo.done).length;
+
+    tasksElement.textContent = remainingTasks;
+
+    if (remainingTasks === 0) {
+        messageElement.textContent =
+            "Nuk ke asnjë detyrë të papërfunduar. Punë e shkëlqyer!";
+    } else if (remainingTasks === 1) {
+        messageElement.textContent =
+            "Ke vetëm një detyrë të mbetur për sot.";
+    } else {
+        messageElement.textContent =
+            `Ke ${remainingTasks} detyra të mbetura për të përfunduar.`;
+    }
+
+    /* Current user */
+
+    if (supabaseClient) {
+        const {
+            data: { user },
+            error: userError
+        } = await supabaseClient.auth.getUser();
+
+        if (!userError && user) {
+            const metadataName =
+                user.user_metadata?.full_name ||
+                user.user_metadata?.name ||
+                user.user_metadata?.display_name;
+
+            const emailName = user.email
+                ? user.email.split("@")[0]
+                : null;
+
+            const displayName = metadataName || emailName || "Student";
+
+            nameElement.textContent = formatDisplayName(displayName);
+
+            /* Pending course submissions */
+
+            const { count, error: countError } = await supabaseClient
+                .from("courses")
+                .select("id", {
+                    count: "exact",
+                    head: true
+                })
+                .eq("user_id", user.id)
+                .eq("approved", false);
+
+            if (!countError) {
+                pendingElement.textContent = count ?? 0;
+            } else {
+                console.warn(
+                    "Could not load pending courses:",
+                    countError
+                );
+
+                pendingCard.style.display = "none";
+            }
+        } else {
+            nameElement.textContent = "Student";
+            pendingCard.style.display = "none";
+        }
+    } else {
+        nameElement.textContent = "Student";
+        pendingCard.style.display = "none";
+    }
+
+    panel.hidden = false;
+
+    if (window.lucide) {
+        lucide.createIcons();
+    }
+}
+
+function formatDisplayName(value) {
+    return value
+        .replace(/[._-]+/g, " ")
+        .split(" ")
+        .filter(Boolean)
+        .map(word =>
+            word.charAt(0).toUpperCase() +
+            word.slice(1).toLowerCase()
+        )
+        .join(" ");
+}
+
+
+
+
+async function updateHomepageStats() {
+    const remainingTasksElement =
+        document.getElementById("remainingTasks");
+
+    const pendingCoursesElement =
+        document.getElementById("pendingCourses");
+
+    if (!remainingTasksElement || !pendingCoursesElement) {
+        return;
+    }
+
+    const {
+        data: { user },
+        error: userError
+    } = await supabaseClient.auth.getUser();
+
+    if (userError) {
+        console.error("User error:", userError);
+        return;
+    }
+
+    if (!user) {
+        remainingTasksElement.textContent = "0";
+        pendingCoursesElement.textContent = "0";
+        return;
+    }
+
+    const { count: todoCount, error: todoError } =
+        await supabaseClient
+            .from("todos")
+            .select("id", {
+                count: "exact",
+                head: true
+            })
+            .eq("user_id", user.id)
+            .eq("done", false);
+
+    if (todoError) {
+        console.error("Todo count error:", todoError);
+    } else {
+        remainingTasksElement.textContent = todoCount ?? 0;
+    }
+
+    const { count: pendingCount, error: pendingError } =
+        await supabaseClient
+            .from("courses")
+            .select("id", {
+                count: "exact",
+                head: true
+            })
+            .eq("user_id", user.id)
+            .eq("approved", false);
+
+    if (pendingError) {
+        console.error("Pending course count error:", pendingError);
+    } else {
+        pendingCoursesElement.textContent = pendingCount ?? 0;
+    }
+}
+
+
+loadHomepageGreeting();
+updateHomepageStats();
 
 
 

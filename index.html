@@ -7,7 +7,7 @@
 
     <title>Studia</title>
 
-    <link rel="icon" type="image/png" href="logo/FAV.png">
+   <link rel="icon" type="image/png" href="logo/FAV.png?v=2">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -93,6 +93,56 @@
         <button type="button" id="dismiss-btn">Kuptoj</button>
     </div>
 </div>
+
+
+<!--Greting Section-->
+<section id="welcomePanel" class="welcome-panel" hidden>
+
+    <div class="welcome-copy">
+        <p id="timeGreeting" class="welcome-eyebrow">
+            Mirë se erdhe
+        </p>
+
+        <h1>
+            <span id="welcomeName">Student</span>.
+        </h1>
+
+        <p id="welcomeMessage" class="welcome-message">
+            Ja çfarë ke për të bërë sot.
+        </p>
+    </div>
+
+    <div class="welcome-stats">
+
+        <a href="tools/todo.html" class="welcome-stat">
+            <div class="welcome-stat-icon">
+                <i data-lucide="list-checks"></i>
+            </div>
+
+            <div>
+                <strong id="remainingTasks">0</strong>
+                <span>Detyra të mbetura</span>
+            </div>
+        </a>
+
+        <div id="pendingCoursesCard" class="welcome-stat">
+            <div class="welcome-stat-icon">
+                <i data-lucide="clock-3"></i>
+            </div>
+
+            <div>
+                <strong id="pendingCourses">0</strong>
+                <span>Kurse në pritje</span>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+
+
     <!-- Main Content -->
   <main>
 
@@ -211,11 +261,24 @@
 
                 <a href="tools/todo.html" class="card">
                <h3>
-        <i data-lucide="list-checks" class="course-logo"></i>
+        <i data-lucide="list-checks"  class="course-logo todo-tool-icon"></i>
                       Lista e Detyrave
               </h3>
     <p>Mbaj shënim detyrat dhe planet e studimit</p>
 </a>
+
+
+<a href="tools/pomodoro.html" class="card">
+    <h3>
+        <i data-lucide="timer" class="timericon"></i>
+        Pomodoro
+    </h3>
+
+    <p>
+        Fokusohu me sesione studimi dhe pushimi
+    </p>
+</a>
+
 
             </div>
 
@@ -292,7 +355,7 @@
 
 
 <footer>
-    <p>Arkiva Studentore – Te gjitha te drejtat e rezervuara</p>
+    <p>Studia | Te gjitha te drejtat e rezervuara</p>
 </footer>
 
 
@@ -301,6 +364,10 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/main.js"></script>
+    <script src="/js/pomodoro-widget.js"></script>
+
+
+    
 
 </body>
 

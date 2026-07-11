@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pomodoro · Studia</title>
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="../logo/FAV.png?v=5"
+    >
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+    <main class="pomodoro-page">
+
+        <section class="pomodoro-card">
+
+            <div class="pomodoro-header">
+                <div>
+                    <p class="pomodoro-eyebrow">STUDIA FOCUS</p>
+
+                    <h1>Pomodoro</h1>
+
+                    <p>
+                        Studio me intervale fokusimi dhe pushimi.
+                    </p>
+                </div>
+
+                <span
+                    id="pomodoroSessions"
+                    class="pomodoro-session-count"
+                >
+                    0 sesione
+                </span>
+            </div>
+
+            <div class="pomodoro-mode-switcher">
+
+                <button
+                    class="pomodoro-mode active"
+                    type="button"
+                    data-mode="focus"
+                >
+                    Fokus
+                </button>
+
+                <button
+                    class="pomodoro-mode"
+                    type="button"
+                    data-mode="short"
+                >
+                    Pushim i shkurtër
+                </button>
+
+                <button
+                    class="pomodoro-mode"
+                    type="button"
+                    data-mode="long"
+                >
+                    Pushim i gjatë
+                </button>
+
+            </div>
+
+            <div class="pomodoro-timer-wrap">
+
+                <div class="pomodoro-ring">
+
+                    <svg
+                        class="pomodoro-progress"
+                        viewBox="0 0 240 240"
+                        aria-hidden="true"
+                    >
+                        <circle
+                            class="pomodoro-track"
+                            cx="120"
+                            cy="120"
+                            r="104"
+                        ></circle>
+
+                        <circle
+                            id="pomodoroProgressCircle"
+                            class="pomodoro-progress-circle"
+                            cx="120"
+                            cy="120"
+                            r="104"
+                        ></circle>
+                    </svg>
+
+                    <div class="pomodoro-time-content">
+
+                        <span id="pomodoroModeLabel">
+                            FOKUS
+                        </span>
+
+                        <strong id="pomodoroTime">
+                            25:00
+                        </strong>
+
+                        <small id="pomodoroStatus">
+                            Gati për të filluar
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="pomodoro-actions">
+
+                <button
+                    id="pomodoroStartBtn"
+                    class="pomodoro-primary-btn"
+                    type="button"
+                >
+                    <i data-lucide="play"></i>
+                    <span>Fillo</span>
+                </button>
+
+                <button
+                    id="pomodoroResetBtn"
+                    class="pomodoro-secondary-btn"
+                    type="button"
+                >
+                    <i data-lucide="rotate-ccw"></i>
+                    <span>Rivendos</span>
+                </button>
+
+            </div>
+
+            <div class="pomodoro-settings">
+
+                <div>
+                    <span>Sesioni i fokusit</span>
+                    <strong>25 min</strong>
+                </div>
+
+                <div>
+                    <span>Pushim i shkurtër</span>
+                    <strong>5 min</strong>
+                </div>
+
+                <div>
+                    <span>Pushim i gjatë</span>
+                    <strong>15 min</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+        <a href="../index.html" class="back-button">
+            ← Faqja Kryesore
+        </a>
+
+    </main>
+
+    <div
+        id="toastContainer"
+        class="toast-container"
+        aria-live="polite"
+        aria-atomic="true"
+    ></div>
+
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+<script src="../js/pomodoro-widget.js"></script>
+<script src="../js/pomodoro.js"></script>
+
+</body>
+</html>

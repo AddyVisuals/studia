@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Studia Admin Login</title>
+
+    <link rel="icon" type="image/png" href="../logo/FAV-ADMIN.png?v=3">
+
+   <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+>
+
+    <link rel="stylesheet" href="../css/admin-login.css">
+</head>
+
+<body>
+
+    <main class="admin-login-page">
+
+        <section class="admin-login-panel">
+
+            <div class="login-brand">
+                <div class="login-brand-mark">S</div>
+
+                <div>
+                    <strong>STUDIA ADMIN</strong>
+                    <span>SECURE ACCESS TERMINAL</span>
+                </div>
+            </div>
+
+            <div class="login-status">
+                <span class="status-dot"></span>
+                AUTHENTICATION SERVICE ONLINE
+            </div>
+
+            <div class="login-heading">
+                <span>ADMIN ACCESS</span>
+                <h1>IDENTIFY YOURSELF</h1>
+
+                <p>
+                    ENTER AUTHORIZED CREDENTIALS TO ACCESS
+                    THE COURSE MODERATION CONSOLE.
+                </p>
+            </div>
+
+            <form id="adminLoginForm" class="admin-login-form">
+
+                <label for="adminEmail">EMAIL ADDRESS</label>
+
+                <input
+                    id="adminEmail"
+                    type="email"
+                    autocomplete="email"
+                    placeholder="admin@studia.com"
+                    required
+                >
+
+                <label for="adminPassword">PASSWORD</label>
+
+                <input
+                    id="adminPassword"
+                    type="password"
+                    autocomplete="current-password"
+                    placeholder="••••••••••••"
+                    required
+                >
+
+                <p id="adminLoginMessage" class="login-message"></p>
+
+                <button id="adminLoginBtn" type="submit">
+                    <span>ACCESS CONSOLE</span>
+                    <i data-lucide="arrow-right"></i>
+                </button>
+
+            </form>
+
+            <a href="../auth/login.html" class="admin-back-link">
+    <i data-lucide="log-out"></i>
+
+    <span>
+        Return to student portal
+    </span>
+</a>
+
+            <div class="login-footer">
+                <span>AUTHORIZED PERSONNEL ONLY</span>
+                <span>STUDIA INTERNAL // V1.0</span>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="../js/admin-login.js"></script>
+
+</body>
+</html>
