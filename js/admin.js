@@ -16,6 +16,16 @@ const AUTO_REFRESH_STORAGE_KEY =
 
 const AUTO_REFRESH_INTERVAL = 15000;
 
+const adminCourseSearch =
+    document.getElementById("adminCourseSearch");
+
+const clearAdminSearch =
+    document.getElementById("clearAdminSearch");
+
+const adminSearchResultCount =
+    document.getElementById("adminSearchResultCount");
+
+let adminSearchTerm = "";
 let adminLogs = [];
 let autoRefreshTimer = null;
 let isLoadingCourses = false;
