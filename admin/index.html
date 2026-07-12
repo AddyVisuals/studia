@@ -164,6 +164,36 @@
 
                 </section>
 
+                <section class="admin-search-section">
+
+    <div class="admin-search-wrap">
+
+        <i data-lucide="search"></i>
+
+        <input
+            id="adminCourseSearch"
+            type="search"
+            placeholder="SEARCH BY TITLE, DESCRIPTION, USER ID OR STATUS..."
+            autocomplete="off"
+        >
+
+        <button
+            id="clearAdminSearch"
+            type="button"
+            aria-label="Clear search"
+            hidden
+        >
+            <i data-lucide="x"></i>
+        </button>
+
+    </div>
+
+    <span id="adminSearchResultCount">
+        SHOWING ALL RECORDS
+    </span>
+
+</section>
+
                 <section id="pending" class="admin-section">
 
                     <div class="section-heading">
@@ -243,21 +273,48 @@
 
                 <section id="logs" class="admin-section">
 
-                    <div class="section-heading">
-                        <div>
-                            <span class="section-index">05</span>
-                            <h2>SYSTEM LOG</h2>
-                        </div>
+                   <div class="section-heading">
+    <div>
+        <span class="section-index">05</span>
+        <h2>SYSTEM LOG</h2>
+    </div>
 
-                        <button
-                            id="clearLogsBtn"
-                            class="admin-button ghost"
-                            type="button"
-                        >
-                            CLEAR
-                        </button>
-                    </div>
+    <div class="admin-log-controls">
 
+        <label class="auto-refresh-control">
+            <input
+                id="autoRefreshToggle"
+                type="checkbox"
+                checked
+            >
+
+            <span class="auto-refresh-switch"></span>
+
+            <span id="autoRefreshStatus">
+                AUTO REFRESH: ON
+            </span>
+        </label>
+
+        <button
+            id="exportLogsBtn"
+            class="admin-button ghost"
+            type="button"
+        >
+            <i data-lucide="download"></i>
+            EXPORT .TXT
+        </button>
+
+        <button
+            id="clearLogsBtn"
+            class="admin-button ghost"
+            type="button"
+        >
+            <i data-lucide="trash-2"></i>
+            CLEAR
+        </button>
+
+    </div>
+</div>
                     <div
                         id="systemLog"
                         class="system-log"
@@ -282,6 +339,70 @@
         aria-live="polite"
         aria-atomic="true"
     ></div>
+
+
+    <div
+    id="adminConfirmOverlay"
+    class="admin-confirm-overlay"
+    hidden
+>
+    <section
+        class="admin-confirm-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="adminConfirmTitle"
+    >
+        <div class="admin-confirm-header">
+            <span>DESTRUCTIVE ACTION</span>
+
+            <button
+                id="adminConfirmClose"
+                type="button"
+                aria-label="Close confirmation"
+            >
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+
+        <div class="admin-confirm-body">
+            <i
+                data-lucide="triangle-alert"
+                class="admin-confirm-warning"
+            ></i>
+
+            <p class="admin-confirm-code">
+                PERMANENT_DELETION
+            </p>
+
+            <h2 id="adminConfirmTitle">
+                DELETE COURSE?
+            </h2>
+
+            <p id="adminConfirmMessage">
+                This action cannot be undone.
+            </p>
+        </div>
+
+        <div class="admin-confirm-actions">
+            <button
+                id="adminConfirmCancel"
+                class="admin-button ghost"
+                type="button"
+            >
+                CANCEL
+            </button>
+
+            <button
+                id="adminConfirmAccept"
+                class="admin-button danger"
+                type="button"
+            >
+                <i data-lucide="trash-2"></i>
+                DELETE PERMANENTLY
+            </button>
+        </div>
+    </section>
+</div>
 
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>

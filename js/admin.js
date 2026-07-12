@@ -1,3 +1,43 @@
+
+const exportLogsButton =
+    document.getElementById("exportLogsBtn");
+
+const autoRefreshToggle =
+    document.getElementById("autoRefreshToggle");
+
+const autoRefreshStatus =
+    document.getElementById("autoRefreshStatus");
+
+const ADMIN_LOG_STORAGE_KEY =
+    "studiaAdminSystemLogs";
+
+const AUTO_REFRESH_STORAGE_KEY =
+    "studiaAdminAutoRefresh";
+
+const AUTO_REFRESH_INTERVAL = 15000;
+
+let adminLogs = [];
+let autoRefreshTimer = null;
+let isLoadingCourses = false;
+
+const adminConfirmOverlay =
+    document.getElementById("adminConfirmOverlay");
+
+const adminConfirmMessage =
+    document.getElementById("adminConfirmMessage");
+
+const adminConfirmAccept =
+    document.getElementById("adminConfirmAccept");
+
+const adminConfirmCancel =
+    document.getElementById("adminConfirmCancel");
+
+const adminConfirmClose =
+    document.getElementById("adminConfirmClose");
+
+let adminConfirmResolver = null;
+
+
 const SUPABASE_URL =
     "https://idewhnsdndbfgggvhfuq.supabase.co";
 
@@ -133,23 +173,92 @@ function setButtonLoading(button, isLoading) {
    LOGS
 =========================== */
 
-function addLog(message) {
+function loadStoredLogs() {
+    try {
+        const storedLogs = JSON.parse(
+            localStorage.getItem(
+                ADMIN_LOG_STORAGE_KEY
+            )
+        );
+
+        adminLogs = Array.isArray(storedLogs)
+            ? storedLogs
+            : [];
+    } catch (error) {
+        console.error(
+            "Stored logs could not be read:",
+            error
+        );
+
+        adminLogs = [];
+    }
+
+    renderSystemLogs();
+}
+
+function saveSystemLogs() {
+    localStorage.setItem(
+        ADMIN_LOG_STORAGE_KEY,
+        JSON.stringify(adminLogs)
+    );
+}
+
+function addLog(message, type = "info") {
+    const log = {
+        id:
+            window.crypto?.randomUUID?.() ||
+            `${Date.now()}-${Math.random()}`,
+
+        message,
+        type,
+        timestamp: new Date().toISOString()
+    };
+
+    adminLogs.unshift(log);
+
+    /* Prevent unlimited localStorage growth */
+    adminLogs = adminLogs.slice(0, 250);
+
+    saveSystemLogs();
+    renderSystemLogs();
+}
+
+function renderSystemLogs() {
     if (!systemLog) return;
 
-    const entry = document.createElement("div");
-    entry.className = "log-entry";
+    systemLog.innerHTML = "";
 
-    entry.innerHTML = `
-        <time>
-            ${new Date().toLocaleTimeString("sq-AL")}
-        </time>
+    if (adminLogs.length === 0) {
+        systemLog.innerHTML = `
+            <div class="log-entry system">
+                <time>--:--:--</time>
+                <span>NO SYSTEM LOG ENTRIES</span>
+            </div>
+        `;
 
-        <span>
-            ${escapeHTML(message)}
-        </span>
-    `;
+        return;
+    }
 
-    systemLog.prepend(entry);
+    adminLogs.forEach((log) => {
+        const entry = document.createElement("div");
+
+        entry.className =
+            `log-entry ${log.type || "info"}`;
+
+        const date = new Date(log.timestamp);
+
+        entry.innerHTML = `
+            <time>
+                ${date.toLocaleTimeString("sq-AL")}
+            </time>
+
+            <span>
+                ${escapeHTML(log.message)}
+            </span>
+        `;
+
+        systemLog.appendChild(entry);
+    });
 }
 
 /* ===========================
@@ -275,8 +384,21 @@ async function verifyAdmin() {
    LOAD COURSES
 =========================== */
 
-async function loadAllCourses() {
-    setAdminLoading(true);
+async function loadAllCourses(
+    {
+        silent = false,
+        source = "manual"
+    } = {}
+) {
+    if (isLoadingCourses) return;
+
+    isLoadingCourses = true;
+
+    if (!silent) {
+        setAdminLoading(true);
+    }
+
+    const previousCourses = [...allCourses];
 
     const { data, error } = await supabaseClient
         .from("courses")
@@ -285,51 +407,413 @@ async function loadAllCourses() {
             ascending: false
         });
 
-    setAdminLoading(false);
+    isLoadingCourses = false;
+
+    if (!silent) {
+        setAdminLoading(false);
+    }
 
     if (error) {
-        console.error("Course loading failed:", error);
+        console.error(
+            "Course loading failed:",
+            error
+        );
 
         showAdminToast(
             "COURSES COULD NOT BE LOADED",
             "error"
         );
 
-        addLog("ERROR: COURSE FETCH FAILED");
+        addLog(
+            "ERROR: COURSE FETCH FAILED",
+            "error"
+        );
+
         return;
     }
 
-    allCourses = data || [];
+    const nextCourses = data || [];
+
+    if (
+        source === "auto" &&
+        previousCourses.length > 0
+    ) {
+        detectCourseChanges(
+            previousCourses,
+            nextCourses
+        );
+    }
+
+    allCourses = nextCourses;
 
     renderAdminDashboard();
     updateAdminStats();
 
     if (lastUpdated) {
         lastUpdated.textContent =
-            `LAST UPDATE: ${new Date().toLocaleTimeString("sq-AL")}`;
+            `LAST UPDATE: ${new Date()
+                .toLocaleTimeString("sq-AL")}`;
     }
 
-    addLog(
-        `COURSE DATA LOADED: ${allCourses.length} RECORDS`
+    if (source === "manual") {
+        addLog(
+            `MANUAL REFRESH: ${allCourses.length} RECORDS`,
+            "system"
+        );
+    }
+
+    if (source === "initial") {
+        addLog(
+            `COURSE DATA LOADED: ${allCourses.length} RECORDS`,
+            "system"
+        );
+    }
+}
+
+function detectCourseChanges(
+    previousCourses,
+    nextCourses
+) {
+    const previousMap = new Map(
+        previousCourses.map((course) => [
+            course.id,
+            course
+        ])
+    );
+
+    const nextMap = new Map(
+        nextCourses.map((course) => [
+            course.id,
+            course
+        ])
+    );
+
+    nextCourses.forEach((course) => {
+        const previousCourse =
+            previousMap.get(course.id);
+
+        if (!previousCourse) {
+            addLog(
+                `NEW SUBMISSION: ${
+                    course.title ||
+                    "UNTITLED COURSE"
+                }`,
+                "warning"
+            );
+
+            showAdminToast(
+                `NEW SUBMISSION: ${
+                    course.title ||
+                    "UNTITLED COURSE"
+                }`,
+                "info"
+            );
+
+            return;
+        }
+
+        const oldStatus =
+            getCourseStatus(previousCourse);
+
+        const newStatus =
+            getCourseStatus(course);
+
+        if (oldStatus !== newStatus) {
+            addLog(
+                `${course.title || "COURSE"}: ` +
+                `${oldStatus.toUpperCase()} → ` +
+                `${newStatus.toUpperCase()}`,
+                newStatus === "approved"
+                    ? "success"
+                    : newStatus === "rejected"
+                        ? "error"
+                        : "warning"
+            );
+        }
+    });
+
+    previousCourses.forEach((course) => {
+        if (!nextMap.has(course.id)) {
+            addLog(
+                `COURSE REMOVED: ${
+                    course.title ||
+                    course.id
+                }`,
+                "error"
+            );
+        }
+    });
+}
+
+
+function startAutoRefresh() {
+    stopAutoRefresh();
+
+    autoRefreshTimer = setInterval(
+        async () => {
+            await loadAllCourses({
+                silent: true,
+                source: "auto"
+            });
+        },
+        AUTO_REFRESH_INTERVAL
+    );
+
+    if (autoRefreshStatus) {
+        autoRefreshStatus.textContent =
+            "AUTO REFRESH: ON";
+    }
+
+    if (autoRefreshToggle) {
+        autoRefreshToggle.checked = true;
+    }
+
+    localStorage.setItem(
+        AUTO_REFRESH_STORAGE_KEY,
+        "true"
     );
 }
+
+function stopAutoRefresh() {
+    if (autoRefreshTimer) {
+        clearInterval(autoRefreshTimer);
+        autoRefreshTimer = null;
+    }
+
+    if (autoRefreshStatus) {
+        autoRefreshStatus.textContent =
+            "AUTO REFRESH: OFF";
+    }
+
+    localStorage.setItem(
+        AUTO_REFRESH_STORAGE_KEY,
+        "false"
+    );
+}
+
+function initializeAutoRefresh() {
+    const savedPreference =
+        localStorage.getItem(
+            AUTO_REFRESH_STORAGE_KEY
+        );
+
+    const shouldEnable =
+        savedPreference !== "false";
+
+    if (autoRefreshToggle) {
+        autoRefreshToggle.checked =
+            shouldEnable;
+    }
+
+    if (shouldEnable) {
+        startAutoRefresh();
+    } else {
+        stopAutoRefresh();
+    }
+}
+
+autoRefreshToggle?.addEventListener(
+    "change",
+    () => {
+        if (autoRefreshToggle.checked) {
+            startAutoRefresh();
+
+            addLog(
+                "AUTOMATIC REFRESH ENABLED",
+                "system"
+            );
+
+            showAdminToast(
+                "AUTO REFRESH ENABLED",
+                "success"
+            );
+        } else {
+            stopAutoRefresh();
+
+            addLog(
+                "AUTOMATIC REFRESH DISABLED",
+                "system"
+            );
+
+            showAdminToast(
+                "AUTO REFRESH DISABLED",
+                "info"
+            );
+        }
+    }
+);
+
+function exportSystemLogs() {
+    if (adminLogs.length === 0) {
+        showAdminToast(
+            "NO LOGS TO EXPORT",
+            "error"
+        );
+
+        return;
+    }
+
+    const header = [
+        "STUDIA ADMIN SYSTEM LOG",
+        "=======================",
+        `Exported: ${new Date()
+            .toLocaleString("sq-AL")}`,
+        `Admin: ${
+            currentAdmin?.email ||
+            currentAdmin?.id ||
+            "UNKNOWN"
+        }`,
+        `Entries: ${adminLogs.length}`,
+        "",
+        "----------------------------------------",
+        ""
+    ].join("\n");
+
+    const entries = adminLogs
+        .slice()
+        .reverse()
+        .map((log) => {
+            const date = new Date(
+                log.timestamp
+            );
+
+            return (
+                `[${date.toLocaleString("sq-AL")}] ` +
+                `[${String(log.type || "info")
+                    .toUpperCase()}] ` +
+                log.message
+            );
+        })
+        .join("\n");
+
+    const fileContent =
+        `${header}${entries}\n`;
+
+    const blob = new Blob(
+        [fileContent],
+        {
+            type: "text/plain;charset=utf-8"
+        }
+    );
+
+    const downloadUrl =
+        URL.createObjectURL(blob);
+
+    const link =
+        document.createElement("a");
+
+    const timestamp = new Date()
+        .toISOString()
+        .replace(/[:.]/g, "-");
+
+    link.href = downloadUrl;
+    link.download =
+        `studia-admin-log-${timestamp}.txt`;
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    URL.revokeObjectURL(downloadUrl);
+
+    addLog(
+        "SYSTEM LOG EXPORTED AS TXT",
+        "success"
+    );
+
+    showAdminToast(
+        "LOG FILE EXPORTED",
+        "success"
+    );
+}
+
+
+exportLogsButton?.addEventListener(
+    "click",
+    exportSystemLogs
+);
+
+clearLogsButton?.addEventListener(
+    "click",
+    async () => {
+        const confirmed =
+            await showAdminConfirm(
+                "All locally stored system log entries will be permanently removed."
+            );
+
+        if (!confirmed) return;
+
+        adminLogs = [];
+
+        localStorage.removeItem(
+            ADMIN_LOG_STORAGE_KEY
+        );
+
+        renderSystemLogs();
+
+        showAdminToast(
+            "SYSTEM LOG CLEARED",
+            "success"
+        );
+    }
+);
+
+
+
 
 /* ===========================
    RENDER DASHBOARD
 =========================== */
 
+function normalizeSearchValue(value) {
+    return String(value ?? "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+}
+
+function courseMatchesSearch(course) {
+    if (!adminSearchTerm) {
+        return true;
+    }
+
+    const searchableContent = [
+        course.title,
+        course.description,
+        course.icon,
+        course.user_id,
+        course.id,
+        course.course_link,
+        getCourseStatus(course)
+    ]
+        .map(normalizeSearchValue)
+        .join(" ");
+
+    return searchableContent.includes(
+        normalizeSearchValue(adminSearchTerm)
+    );
+}
+
+
+
+
 function renderAdminDashboard() {
-    const pendingCourses = allCourses.filter(
+    const visibleCourses = allCourses.filter(
+        courseMatchesSearch
+    );
+
+    const pendingCourses = visibleCourses.filter(
         (course) =>
             getCourseStatus(course) === "pending"
     );
 
-    const approvedCourses = allCourses.filter(
+    const approvedCourses = visibleCourses.filter(
         (course) =>
             getCourseStatus(course) === "approved"
     );
 
-    const rejectedCourses = allCourses.filter(
+    const rejectedCourses = visibleCourses.filter(
         (course) =>
             getCourseStatus(course) === "rejected"
     );
@@ -355,6 +839,36 @@ function renderAdminDashboard() {
     if (pendingEmpty) {
         pendingEmpty.hidden =
             pendingCourses.length !== 0;
+
+        const pendingMessage =
+            pendingEmpty.querySelector("p");
+
+        const pendingMeta =
+            pendingEmpty.querySelector("span");
+
+        if (pendingMessage) {
+            pendingMessage.textContent =
+                adminSearchTerm
+                    ? "NO MATCHING PENDING SUBMISSIONS"
+                    : "NO PENDING SUBMISSIONS";
+        }
+
+        if (pendingMeta) {
+            pendingMeta.textContent =
+                adminSearchTerm
+                    ? "TRY A DIFFERENT SEARCH TERM"
+                    : "THE REVIEW QUEUE IS CLEAR";
+        }
+    }
+
+    if (adminSearchResultCount) {
+        if (adminSearchTerm) {
+            adminSearchResultCount.textContent =
+                `${visibleCourses.length} OF ${allCourses.length} RECORDS`;
+        } else {
+            adminSearchResultCount.textContent =
+                `SHOWING ALL ${allCourses.length} RECORDS`;
+        }
     }
 
     refreshLucideIcons();
@@ -511,6 +1025,15 @@ function getActionButtons(sectionType) {
                 <i data-lucide="x"></i>
                 REJECT
             </button>
+
+            <button
+                class="admin-button danger"
+                data-action="delete"
+                type="button"
+            >
+                <i data-lucide="trash-2"></i>
+                DELETE
+            </button>
         `;
     }
 
@@ -523,6 +1046,15 @@ function getActionButtons(sectionType) {
             >
                 <i data-lucide="ban"></i>
                 REJECT
+            </button>
+
+            <button
+                class="admin-button danger"
+                data-action="delete"
+                type="button"
+            >
+                <i data-lucide="trash-2"></i>
+                DELETE
             </button>
         `;
     }
@@ -586,21 +1118,24 @@ function attachCourseActions(card, course) {
         }
     );
 
-    deleteButton?.addEventListener(
-        "click",
-        async () => {
-            const confirmed = window.confirm(
-                `Permanently delete "${course.title}"?`
-            );
+deleteButton?.addEventListener(
+    "click",
+    async () => {
+        const courseTitle =
+            course.title || "UNTITLED COURSE";
 
-            if (!confirmed) return;
+        const confirmed = await showAdminConfirm(
+            `Course: ${courseTitle}. This action permanently removes the record and cannot be undone.`
+        );
 
-            await deleteCourse(
-                course,
-                deleteButton
-            );
+        if (!confirmed) {
+            addLog(`DELETE CANCELLED: ${courseTitle}`);
+            return;
         }
-    );
+
+        await deleteCourse(course, deleteButton);
+    }
+);
 }
 
 /* ===========================
@@ -754,7 +1289,10 @@ function updateAdminStats() {
 refreshButton?.addEventListener(
     "click",
     async () => {
-        await loadAllCourses();
+        await loadAllCourses({
+            silent: false,
+            source: "manual"
+        });
 
         showAdminToast(
             "COURSE DATA REFRESHED",
@@ -786,6 +1324,47 @@ logoutButton?.addEventListener("click", async () => {
     window.location.replace("/admin/login.html");
 });
 
+
+adminCourseSearch?.addEventListener(
+    "input",
+    (event) => {
+        adminSearchTerm =
+            event.target.value.trim();
+
+        if (clearAdminSearch) {
+            clearAdminSearch.hidden =
+                adminSearchTerm.length === 0;
+        }
+
+        renderAdminDashboard();
+    }
+);
+
+clearAdminSearch?.addEventListener(
+    "click",
+    () => {
+        adminSearchTerm = "";
+
+        if (adminCourseSearch) {
+            adminCourseSearch.value = "";
+            adminCourseSearch.focus();
+        }
+
+        clearAdminSearch.hidden = true;
+
+        renderAdminDashboard();
+    }
+);
+
+
+window.addEventListener(
+    "beforeunload",
+    () => {
+        if (autoRefreshTimer) {
+            clearInterval(autoRefreshTimer);
+        }
+    }
+);
 /* ===========================
    INITIALIZE
 =========================== */
@@ -795,11 +1374,102 @@ async function initializeAdminPage() {
 
     if (!isAdmin) return;
 
-    addLog("ADMIN SESSION VERIFIED");
+    loadStoredLogs();
 
-    await loadAllCourses();
+    addLog(
+        `ADMIN SESSION VERIFIED: ${
+            currentAdmin.email ||
+            currentAdmin.id
+        }`,
+        "success"
+    );
 
+    await loadAllCourses({
+        silent: false,
+        source: "initial"
+    });
+
+    initializeAutoRefresh();
     refreshLucideIcons();
 }
 
 initializeAdminPage();
+
+
+
+
+
+function showAdminConfirm(message) {
+    return new Promise((resolve) => {
+        if (
+            !adminConfirmOverlay ||
+            !adminConfirmMessage ||
+            !adminConfirmAccept
+        ) {
+            resolve(false);
+            return;
+        }
+
+        adminConfirmResolver = resolve;
+        adminConfirmMessage.textContent = message;
+
+        adminConfirmOverlay.hidden = false;
+        document.body.classList.add("confirm-open");
+
+        requestAnimationFrame(() => {
+            adminConfirmOverlay.classList.add("visible");
+            adminConfirmAccept.focus();
+        });
+
+        refreshLucideIcons();
+    });
+}
+
+function closeAdminConfirm(result) {
+    if (!adminConfirmOverlay) return;
+
+    adminConfirmOverlay.classList.remove("visible");
+    document.body.classList.remove("confirm-open");
+
+    setTimeout(() => {
+        adminConfirmOverlay.hidden = true;
+    }, 180);
+
+    if (adminConfirmResolver) {
+        adminConfirmResolver(result);
+        adminConfirmResolver = null;
+    }
+}
+
+adminConfirmAccept?.addEventListener(
+    "click",
+    () => closeAdminConfirm(true)
+);
+
+adminConfirmCancel?.addEventListener(
+    "click",
+    () => closeAdminConfirm(false)
+);
+
+adminConfirmClose?.addEventListener(
+    "click",
+    () => closeAdminConfirm(false)
+);
+
+adminConfirmOverlay?.addEventListener(
+    "click",
+    (event) => {
+        if (event.target === adminConfirmOverlay) {
+            closeAdminConfirm(false);o
+        }
+    }
+);
+
+document.addEventListener("keydown", (event) => {
+    if (
+        event.key === "Escape" &&
+        adminConfirmOverlay?.classList.contains("visible")
+    ) {
+        closeAdminConfirm(false);
+    }
+});
