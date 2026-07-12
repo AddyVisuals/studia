@@ -1321,7 +1321,7 @@ logoutButton?.addEventListener("click", async () => {
         return;
     }
 
-    window.location.replace("/admin/login.html");
+     window.location.replace("../admin/login.html");
 });
 
 
