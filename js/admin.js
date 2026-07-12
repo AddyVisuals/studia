@@ -414,36 +414,19 @@ async function loadAllCourses(
     }
 
     if (error) {
-        console.error(
-            "Course loading failed:",
-            error
-        );
-
-        showAdminToast(
-            "COURSES COULD NOT BE LOADED",
-            "error"
-        );
-
-        addLog(
-            "ERROR: COURSE FETCH FAILED",
-            "error"
-        );
-
+        console.error("Course loading failed:", error);
+        showAdminToast("COURSES COULD NOT BE LOADED", "error");
+        addLog("ERROR: COURSE FETCH FAILED", "error");
         return;
     }
 
     const nextCourses = data || [];
 
-    if (
-        source === "auto" &&
-        previousCourses.length > 0
-    ) {
-        detectCourseChanges(
-            previousCourses,
-            nextCourses
-        );
+    if (source === "auto" && previousCourses.length > 0) {
+        detectCourseChanges(previousCourses, nextCourses);
     }
 
+    /* Critical ordering */
     allCourses = nextCourses;
 
     renderAdminDashboard();
@@ -451,8 +434,7 @@ async function loadAllCourses(
 
     if (lastUpdated) {
         lastUpdated.textContent =
-            `LAST UPDATE: ${new Date()
-                .toLocaleTimeString("sq-AL")}`;
+            `LAST UPDATE: ${new Date().toLocaleTimeString("sq-AL")}`;
     }
 
     if (source === "manual") {
@@ -1321,7 +1303,7 @@ logoutButton?.addEventListener("click", async () => {
         return;
     }
 
-     window.location.replace("../admin/login.html");
+    window.location.replace("../admin/login.html");
 });
 
 
